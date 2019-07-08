@@ -1,48 +1,42 @@
-import { createStore, combineReducers } from "redux";
+import { applyMiddleware, createStore } from "redux";
 
-
-const userReducer = (state = {}, action) => {
+const reducer = (state = 0, action) => {
   switch (action.type) {
-    case "CHANGE_NAME":
-      state = {...state, name: action.payload}
+    case "ADD":
+      state = state + 1;
       break;
-    case "CHANGE_AGE":
-      state = {...state, age: action.payload}
+    case "DEC":
+      state = state - 1;
       break;
-  }
-  return state;
-}
-const tweetReducer = (state = [], action) => {
-  switch(action.type) {
-    case "ADD_TWEET":
-      state = state.concat({id: Date.now(), text: action.payload});
-    break;
-  }
+    case "ERROR":
+      throw new Error("It's error!!!!");
 
-  return state;
+  }
 }
 
-const reducers = combineReducers({
-  user: userReducer,
-  tweet: tweetReducer
-})
+const logger = (store) => (next) => (action) => {
+  console.log("action fired", action);
+  next(action);
+}
 
-const store = createStore(reducers);
+const error = (store) => (next) => (action) => {
+  try{
+    next(action);
+  }catch(e){
+    console.log("Error was occured!!", e);
+  }
+}
+  
+const middleware = applyMiddleware(logger, error);
+  
+const store = createStore(reducer, 1, middleware);
 
 store.subscribe(() => {
-  console.log("store changed!!",store.getState());
+  console.log("store changed!!", store.getState());
 })
 
-
-store.dispatch({type: "CHANGE_NAME", payload: "MURUSOOOO"});
-store.dispatch({type: "CHANGE_AGE", payload: 24});
-store.dispatch({type: "CHANGE_AGE", payload: 42});
-store.dispatch({type: "ADD_TWEET", payload: "first tweet"});
-store.dispatch({type: "ADD_TWEET", payload: "second tweet"});
-
-
-
-
-
-
-
+store.dispatch({type: "INC"});
+store.dispatch({type: "INC"});
+store.dispatch({type: "INC"});
+store.dispatch({type: "DEC"});
+store.dispatch({type: "ERROR"});

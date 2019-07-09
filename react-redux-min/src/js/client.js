@@ -1,42 +1,54 @@
 import { applyMiddleware, createStore } from "redux";
+import { createLogger } from "redux-logger";
+import axios from "axios";
+import thunk from "redux-thunk";
 
-const reducer = (state = 0, action) => {
+
+const initialState = {
+  fetching: false,
+  fetched: false,
+  users: [],
+  error: null
+};
+
+// const reducer = (state={}, action) => {
+//   switch (action.type) {
+//     case "FETCH_USERS_START":
+//       break;
+//     case "FETCH_USERS_ERROR":
+//       break;
+//     case "RECEIVE_USERS":
+//       break;
+//   }
+//   return state;
+// };
+
+const reducer = (state=initialState, action) => {
   switch (action.type) {
-    case "ADD":
-      state = state + 1;
-      break;
-    case "DEC":
-      state = state - 1;
-      break;
-    case "ERROR":
-      throw new Error("It's error!!!!");
-
+    case "FETCH_USERS_START":
+      return {...state, fetching: true};
+    case "FETCH_USERS_ERROR":
+      return {...state, fetching :false, error: action.payload};
+    case "RECEIVE_USERS":
+      return {
+        ...state,
+        fetching: false,
+        fetched: true,
+        users: action.payload
+      };
   }
-}
+  return state;
+};
 
-const logger = (store) => (next) => (action) => {
-  console.log("action fired", action);
-  next(action);
-}
+const middleware = applyMiddleware(thunk,createLogger());
+const store = createStore(reducer, middleware);
 
-const error = (store) => (next) => (action) => {
-  try{
-    next(action);
-  }catch(e){
-    console.log("Error was occured!!", e);
-  }
-}
-  
-const middleware = applyMiddleware(logger, error);
-  
-const store = createStore(reducer, 1, middleware);
-
-store.subscribe(() => {
-  console.log("store changed!!", store.getState());
-})
-
-store.dispatch({type: "INC"});
-store.dispatch({type: "INC"});
-store.dispatch({type: "INC"});
-store.dispatch({type: "DEC"});
-store.dispatch({type: "ERROR"});
+// store.dispatch({type: "FOO"});
+store.dispatch((dispatch) => {
+  dispatch({type: "FETCH_USERS_START"});
+  axios.get("http://localhost:18080").then((response) => {
+    dispatch({type: "RECEIVE_USERS", payload: response.data});
+  }).catch((err) => {
+    dispatch({type: "FETCH_USERS_ERROR", payload: err});
+  });
+});

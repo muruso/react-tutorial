@@ -46,7 +46,7 @@ const store = createStore(reducer, middleware);
 // store.dispatch({type: "FOO"});
 store.dispatch((dispatch) => {
   dispatch({type: "FETCH_USERS_START"});
-  axios.get("http://localhost:18080").then((response) => {
+  axios.get("http://localhost:3000/api/v1/users/1").then((response) => {
     dispatch({type: "RECEIVE_USERS", payload: response.data});
   }).catch((err) => {
     dispatch({type: "FETCH_USERS_ERROR", payload: err});

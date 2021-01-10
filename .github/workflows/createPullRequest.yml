@@ -39,5 +39,5 @@ jobs:
           path: action-practice
           title: Security Update into master.
           labels: Auto PR
-          branch: securityFix #作成されるブランチは securityFix-xxxxxxx
+          branch: feature/update-package
           token: ${{ secrets.MURUSO_SECRET }}

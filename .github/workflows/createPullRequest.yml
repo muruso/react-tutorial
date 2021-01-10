@@ -13,10 +13,6 @@ jobs:
         with:
           node-version: "10.x"
 
-      - uses: actions/checkout@v2
-        with:
-          path: main
-
       - uses: actions/checkout@v2 # リポジトリを読み込み
         with:
           repository: "muruso/action-practice"
@@ -38,6 +34,7 @@ jobs:
         env:
           ACTIONS_ALLOW_UNSECURE_COMMANDS: "true"
         with:
+          path: action-practice
           title: Security Update into master.
           labels: Auto PR
           branch: feature/update-package

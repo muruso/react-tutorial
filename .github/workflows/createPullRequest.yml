@@ -35,6 +35,7 @@ jobs:
         env:
           ACTIONS_ALLOW_UNSECURE_COMMANDS: "true"
         with:
+          base: main
           path: action-practice
           title: Security Update into master.
           labels: Auto PR

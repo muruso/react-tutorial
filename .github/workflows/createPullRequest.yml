@@ -38,5 +38,6 @@ jobs:
           base: main
           path: action-practice
           title: Security Update into master.
+          branch: hoge
           labels: Auto PR
           token: ${{ secrets.MURUSO_SECRET }}

@@ -30,7 +30,7 @@ jobs:
 
       - run: yarn add typescript
 
-      - run: git status
+      - run: touch index.html
 
       - name: Create Pull Request # ブランチを作成して PullRequest を作成
         id: cpr

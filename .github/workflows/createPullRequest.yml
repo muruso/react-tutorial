@@ -33,6 +33,8 @@ jobs:
       - name: Create Pull Request # ブランチを作成して PullRequest を作成
         id: cpr
         uses: peter-evans/create-pull-request@v1.7.0
+        env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: "true"
         with:
           title: Security Update into master.
           labels: Auto PR

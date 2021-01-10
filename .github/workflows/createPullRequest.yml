@@ -30,6 +30,8 @@ jobs:
 
       - run: yarn add typescript
 
+      - run: git status
+
       - name: Create Pull Request # ブランチを作成して PullRequest を作成
         id: cpr
         uses: peter-evans/create-pull-request@v3

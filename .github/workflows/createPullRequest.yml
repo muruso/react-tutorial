@@ -18,6 +18,7 @@ jobs:
           repository: "muruso/action-practice"
           token: ${{ secrets.MURUSO_SECRET }}
           path: action-practice
+          ref: create-pull-request/patch
 
       - run: npm install -g npm
 

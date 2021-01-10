@@ -32,10 +32,11 @@ jobs:
 
       - name: Create Pull Request # ブランチを作成して PullRequest を作成
         id: cpr
-        uses: peter-evans/create-pull-request@v1.7.0
+        uses: peter-evans/create-pull-request@v3
         env:
           ACTIONS_ALLOW_UNSECURE_COMMANDS: "true"
         with:
+          path: action-practice
           title: Security Update into master.
           labels: Auto PR
           branch: securityFix #作成されるブランチは securityFix-xxxxxxx
